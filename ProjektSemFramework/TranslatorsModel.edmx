@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TranslatorsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Dokumenty">
+          <Key>
+            <PropertyRef Name="id_dokumentu" />
+          </Key>
+          <Property Name="data_zlecenia" Type="date" />
+          <Property Name="oplacone" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="przetlumaczone" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="oddane_klientowi" Type="varchar" MaxLength="21" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="id_dokumentu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_klienta" Type="int" />
+          <Property Name="id_tlumacza" Type="int" />
+          <Property Name="id_jezyka_oryginalu" Type="int" />
+          <Property Name="id_jezyka_tlumaczenia" Type="int" />
+        </EntityType>
+        <EntityType Name="Jezyki">
+          <Key>
+            <PropertyRef Name="id_jezyka" />
+          </Key>
+          <Property Name="id_jezyka" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="jezyk" Type="varchar" MaxLength="85" />
+          <Property Name="cena_za_strone" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Jezyki_Tlumacza">
+          <Key>
+            <PropertyRef Name="id_jezyki_tlumacza" />
+          </Key>
+          <Property Name="id_jezyki_tlumacza" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_jezyka" Type="int" Nullable="false" />
+          <Property Name="id_tlumacza" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Klienci">
+          <Key>
+            <PropertyRef Name="id_klienta" />
+          </Key>
+          <Property Name="id_klienta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="kraj" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="miasto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ulica" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nr_budynku" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="nr_lokalu" Type="varchar" MaxLength="5" />
+          <Property Name="kod_pocztowy" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="telefon" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="e_mail" Type="varchar" MaxLength="50" />
+          <Property Name="NIP" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Tlumacze">
+          <Key>
+            <PropertyRef Name="id_tlumacza" />
+          </Key>
+          <Property Name="id_tlumacza" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefon" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="e_mail" Type="varchar" MaxLength="50" />
+          <Property Name="jezyk_ojczysty" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Dokumenty__id_je__33D4B598">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_jezyka_oryginalu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_je__34C8D9D1">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_jezyka_tlumaczenia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_kl__31EC6D26">
+          <End Role="Klienci" Type="Self.Klienci" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klienci">
+              <PropertyRef Name="id_klienta" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_klienta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_tl__32E0915F">
+          <End Role="Tlumacze" Type="Self.Tlumacze" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tlumacze">
+              <PropertyRef Name="id_tlumacza" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_tlumacza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Jezyki_Tl__id_je__29572725">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="1" />
+          <End Role="Jezyki_Tlumacza" Type="Self.Jezyki_Tlumacza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Jezyki_Tlumacza">
+              <PropertyRef Name="id_jezyka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Jezyki_Tl__id_tl__2A4B4B5E">
+          <End Role="Tlumacze" Type="Self.Tlumacze" Multiplicity="1" />
+          <End Role="Jezyki_Tlumacza" Type="Self.Jezyki_Tlumacza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tlumacze">
+              <PropertyRef Name="id_tlumacza" />
+            </Principal>
+            <Dependent Role="Jezyki_Tlumacza">
+              <PropertyRef Name="id_tlumacza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TranslatorsDBModelStoreContainer">
+          <EntitySet Name="Dokumenty" EntityType="Self.Dokumenty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jezyki" EntityType="Self.Jezyki" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jezyki_Tlumacza" EntityType="Self.Jezyki_Tlumacza" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klienci" EntityType="Self.Klienci" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tlumacze" EntityType="Self.Tlumacze" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Dokumenty__id_je__33D4B598" Association="Self.FK__Dokumenty__id_je__33D4B598">
+            <End Role="Jezyki" EntitySet="Jezyki" />
+            <End Role="Dokumenty" EntitySet="Dokumenty" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_je__34C8D9D1" Association="Self.FK__Dokumenty__id_je__34C8D9D1">
+            <End Role="Jezyki" EntitySet="Jezyki" />
+            <End Role="Dokumenty" EntitySet="Dokumenty" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_kl__31EC6D26" Association="Self.FK__Dokumenty__id_kl__31EC6D26">
+            <End Role="Klienci" EntitySet="Klienci" />
+            <End Role="Dokumenty" EntitySet="Dokumenty" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_tl__32E0915F" Association="Self.FK__Dokumenty__id_tl__32E0915F">
+            <End Role="Tlumacze" EntitySet="Tlumacze" />
+            <End Role="Dokumenty" EntitySet="Dokumenty" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Jezyki_Tl__id_je__29572725" Association="Self.FK__Jezyki_Tl__id_je__29572725">
+            <End Role="Jezyki" EntitySet="Jezyki" />
+            <End Role="Jezyki_Tlumacza" EntitySet="Jezyki_Tlumacza" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Jezyki_Tl__id_tl__2A4B4B5E" Association="Self.FK__Jezyki_Tl__id_tl__2A4B4B5E">
+            <End Role="Tlumacze" EntitySet="Tlumacze" />
+            <End Role="Jezyki_Tlumacza" EntitySet="Jezyki_Tlumacza" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TranslatorsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dokumenty">
+          <Key>
+            <PropertyRef Name="id_dokumentu" />
+          </Key>
+          <Property Name="data_zlecenia" Type="DateTime" Precision="0" />
+          <Property Name="oplacone" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="przetlumaczone" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="oddane_klientowi" Type="String" MaxLength="21" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="id_dokumentu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_klienta" Type="Int32" />
+          <Property Name="id_tlumacza" Type="Int32" />
+          <Property Name="id_jezyka_oryginalu" Type="Int32" />
+          <Property Name="id_jezyka_tlumaczenia" Type="Int32" />
+          <NavigationProperty Name="Jezyki" Relationship="Self.FK__Dokumenty__id_je__33D4B598" FromRole="Dokumenty" ToRole="Jezyki" />
+          <NavigationProperty Name="Jezyki1" Relationship="Self.FK__Dokumenty__id_je__34C8D9D1" FromRole="Dokumenty" ToRole="Jezyki" />
+          <NavigationProperty Name="Klienci" Relationship="Self.FK__Dokumenty__id_kl__31EC6D26" FromRole="Dokumenty" ToRole="Klienci" />
+          <NavigationProperty Name="Tlumacze" Relationship="Self.FK__Dokumenty__id_tl__32E0915F" FromRole="Dokumenty" ToRole="Tlumacze" />
+        </EntityType>
+        <EntityType Name="Jezyki">
+          <Key>
+            <PropertyRef Name="id_jezyka" />
+          </Key>
+          <Property Name="id_jezyka" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="jezyk" Type="String" MaxLength="85" FixedLength="false" Unicode="false" />
+          <Property Name="cena_za_strone" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Dokumenties" Relationship="Self.FK__Dokumenty__id_je__33D4B598" FromRole="Jezyki" ToRole="Dokumenty" />
+          <NavigationProperty Name="Dokumenties1" Relationship="Self.FK__Dokumenty__id_je__34C8D9D1" FromRole="Jezyki" ToRole="Dokumenty" />
+          <NavigationProperty Name="Jezyki_Tlumacza" Relationship="Self.FK__Jezyki_Tl__id_je__29572725" FromRole="Jezyki" ToRole="Jezyki_Tlumacza" />
+        </EntityType>
+        <EntityType Name="Jezyki_Tlumacza">
+          <Key>
+            <PropertyRef Name="id_jezyki_tlumacza" />
+          </Key>
+          <Property Name="id_jezyki_tlumacza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_jezyka" Type="Int32" Nullable="false" />
+          <Property Name="id_tlumacza" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Jezyki" Relationship="Self.FK__Jezyki_Tl__id_je__29572725" FromRole="Jezyki_Tlumacza" ToRole="Jezyki" />
+          <NavigationProperty Name="Tlumacze" Relationship="Self.FK__Jezyki_Tl__id_tl__2A4B4B5E" FromRole="Jezyki_Tlumacza" ToRole="Tlumacze" />
+        </EntityType>
+        <EntityType Name="Klienci">
+          <Key>
+            <PropertyRef Name="id_klienta" />
+          </Key>
+          <Property Name="id_klienta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="kraj" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="miasto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ulica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nr_budynku" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nr_lokalu" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="kod_pocztowy" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefon" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="e_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Dokumenties" Relationship="Self.FK__Dokumenty__id_kl__31EC6D26" FromRole="Klienci" ToRole="Dokumenty" />
+        </EntityType>
+        <EntityType Name="Tlumacze">
+          <Key>
+            <PropertyRef Name="id_tlumacza" />
+          </Key>
+          <Property Name="id_tlumacza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefon" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="e_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="jezyk_ojczysty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Dokumenties" Relationship="Self.FK__Dokumenty__id_tl__32E0915F" FromRole="Tlumacze" ToRole="Dokumenty" />
+          <NavigationProperty Name="Jezyki_Tlumacza" Relationship="Self.FK__Jezyki_Tl__id_tl__2A4B4B5E" FromRole="Tlumacze" ToRole="Jezyki_Tlumacza" />
+        </EntityType>
+        <Association Name="FK__Dokumenty__id_je__33D4B598">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_jezyka_oryginalu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_je__34C8D9D1">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_jezyka_tlumaczenia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_kl__31EC6D26">
+          <End Role="Klienci" Type="Self.Klienci" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klienci">
+              <PropertyRef Name="id_klienta" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_klienta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dokumenty__id_tl__32E0915F">
+          <End Role="Tlumacze" Type="Self.Tlumacze" Multiplicity="0..1" />
+          <End Role="Dokumenty" Type="Self.Dokumenty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tlumacze">
+              <PropertyRef Name="id_tlumacza" />
+            </Principal>
+            <Dependent Role="Dokumenty">
+              <PropertyRef Name="id_tlumacza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Jezyki_Tl__id_je__29572725">
+          <End Role="Jezyki" Type="Self.Jezyki" Multiplicity="1" />
+          <End Role="Jezyki_Tlumacza" Type="Self.Jezyki_Tlumacza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jezyki">
+              <PropertyRef Name="id_jezyka" />
+            </Principal>
+            <Dependent Role="Jezyki_Tlumacza">
+              <PropertyRef Name="id_jezyka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Jezyki_Tl__id_tl__2A4B4B5E">
+          <End Role="Tlumacze" Type="Self.Tlumacze" Multiplicity="1" />
+          <End Role="Jezyki_Tlumacza" Type="Self.Jezyki_Tlumacza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tlumacze">
+              <PropertyRef Name="id_tlumacza" />
+            </Principal>
+            <Dependent Role="Jezyki_Tlumacza">
+              <PropertyRef Name="id_tlumacza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TranslatorsDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dokumenties" EntityType="Self.Dokumenty" />
+          <EntitySet Name="Jezykis" EntityType="Self.Jezyki" />
+          <EntitySet Name="Jezyki_Tlumacza" EntityType="Self.Jezyki_Tlumacza" />
+          <EntitySet Name="Kliencis" EntityType="Self.Klienci" />
+          <EntitySet Name="Tlumaczes" EntityType="Self.Tlumacze" />
+          <AssociationSet Name="FK__Dokumenty__id_je__33D4B598" Association="Self.FK__Dokumenty__id_je__33D4B598">
+            <End Role="Jezyki" EntitySet="Jezykis" />
+            <End Role="Dokumenty" EntitySet="Dokumenties" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_je__34C8D9D1" Association="Self.FK__Dokumenty__id_je__34C8D9D1">
+            <End Role="Jezyki" EntitySet="Jezykis" />
+            <End Role="Dokumenty" EntitySet="Dokumenties" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_kl__31EC6D26" Association="Self.FK__Dokumenty__id_kl__31EC6D26">
+            <End Role="Klienci" EntitySet="Kliencis" />
+            <End Role="Dokumenty" EntitySet="Dokumenties" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dokumenty__id_tl__32E0915F" Association="Self.FK__Dokumenty__id_tl__32E0915F">
+            <End Role="Tlumacze" EntitySet="Tlumaczes" />
+            <End Role="Dokumenty" EntitySet="Dokumenties" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Jezyki_Tl__id_je__29572725" Association="Self.FK__Jezyki_Tl__id_je__29572725">
+            <End Role="Jezyki" EntitySet="Jezykis" />
+            <End Role="Jezyki_Tlumacza" EntitySet="Jezyki_Tlumacza" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Jezyki_Tl__id_tl__2A4B4B5E" Association="Self.FK__Jezyki_Tl__id_tl__2A4B4B5E">
+            <End Role="Tlumacze" EntitySet="Tlumaczes" />
+            <End Role="Jezyki_Tlumacza" EntitySet="Jezyki_Tlumacza" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TranslatorsDBModelStoreContainer" CdmEntityContainer="TranslatorsDBEntities">
+          <EntitySetMapping Name="Dokumenties">
+            <EntityTypeMapping TypeName="TranslatorsDBModel.Dokumenty">
+              <MappingFragment StoreEntitySet="Dokumenty">
+                <ScalarProperty Name="data_zlecenia" ColumnName="data_zlecenia" />
+                <ScalarProperty Name="oplacone" ColumnName="oplacone" />
+                <ScalarProperty Name="przetlumaczone" ColumnName="przetlumaczone" />
+                <ScalarProperty Name="oddane_klientowi" ColumnName="oddane_klientowi" />
+                <ScalarProperty Name="id_dokumentu" ColumnName="id_dokumentu" />
+                <ScalarProperty Name="id_klienta" ColumnName="id_klienta" />
+                <ScalarProperty Name="id_tlumacza" ColumnName="id_tlumacza" />
+                <ScalarProperty Name="id_jezyka_oryginalu" ColumnName="id_jezyka_oryginalu" />
+                <ScalarProperty Name="id_jezyka_tlumaczenia" ColumnName="id_jezyka_tlumaczenia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jezykis">
+            <EntityTypeMapping TypeName="TranslatorsDBModel.Jezyki">
+              <MappingFragment StoreEntitySet="Jezyki">
+                <ScalarProperty Name="id_jezyka" ColumnName="id_jezyka" />
+                <ScalarProperty Name="jezyk" ColumnName="jezyk" />
+                <ScalarProperty Name="cena_za_strone" ColumnName="cena_za_strone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jezyki_Tlumacza">
+            <EntityTypeMapping TypeName="TranslatorsDBModel.Jezyki_Tlumacza">
+              <MappingFragment StoreEntitySet="Jezyki_Tlumacza">
+                <ScalarProperty Name="id_jezyki_tlumacza" ColumnName="id_jezyki_tlumacza" />
+                <ScalarProperty Name="id_jezyka" ColumnName="id_jezyka" />
+                <ScalarProperty Name="id_tlumacza" ColumnName="id_tlumacza" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kliencis">
+            <EntityTypeMapping TypeName="TranslatorsDBModel.Klienci">
+              <MappingFragment StoreEntitySet="Klienci">
+                <ScalarProperty Name="id_klienta" ColumnName="id_klienta" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="kraj" ColumnName="kraj" />
+                <ScalarProperty Name="miasto" ColumnName="miasto" />
+                <ScalarProperty Name="ulica" ColumnName="ulica" />
+                <ScalarProperty Name="nr_budynku" ColumnName="nr_budynku" />
+                <ScalarProperty Name="nr_lokalu" ColumnName="nr_lokalu" />
+                <ScalarProperty Name="kod_pocztowy" ColumnName="kod_pocztowy" />
+                <ScalarProperty Name="telefon" ColumnName="telefon" />
+                <ScalarProperty Name="e_mail" ColumnName="e_mail" />
+                <ScalarProperty Name="NIP" ColumnName="NIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tlumaczes">
+            <EntityTypeMapping TypeName="TranslatorsDBModel.Tlumacze">
+              <MappingFragment StoreEntitySet="Tlumacze">
+                <ScalarProperty Name="id_tlumacza" ColumnName="id_tlumacza" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="telefon" ColumnName="telefon" />
+                <ScalarProperty Name="e_mail" ColumnName="e_mail" />
+                <ScalarProperty Name="jezyk_ojczysty" ColumnName="jezyk_ojczysty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
