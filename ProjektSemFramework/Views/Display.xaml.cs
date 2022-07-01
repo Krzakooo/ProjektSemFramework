@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace ProjektSemFramework.Views
 {
@@ -24,6 +26,17 @@ namespace ProjektSemFramework.Views
         {
             InitializeComponent();
 
+           
+        } 
+
+
+        private void BtnClick1(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Order());
+        }
+
+        private void BtnClickLoad(object sender, RoutedEventArgs e)
+        {
             TranslatorsDBEntities db = new TranslatorsDBEntities();
             var Ts = from d in db.Tlumaczes
                      join b in db.Jezyki_Tlumacza on d.id_tlumacza equals b.id_tlumacza
@@ -35,24 +48,14 @@ namespace ProjektSemFramework.Views
                          Language = a.jezyk
                      };
 
-            var Ls = from d in db.Tlumaczes
-                     select new
-                     {
-                         Languages = d.Jezyki_Tlumacza
-                     };
+
 
             foreach (var item in Ts)
             {
                 //Console.WriteLine(item.nazwisko);
             }
 
-            this.TranslatorGrid.ItemsSource = Ts.ToList(); 
-        }
-
-
-        private void BtnClick1(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Order());
+            this.TranslatorGrid.ItemsSource = Ts.ToList();
         }
 
         private void BtnClickAdd(object sender, RoutedEventArgs e)
@@ -62,11 +65,50 @@ namespace ProjektSemFramework.Views
             {
                 imie = txtName.Text,
                 nazwisko = txtSurame.Text,
-                jezyk_ojczysty = txtLang.Text,
+                jezyk_ojczysty = txtMt.Text,
+                telefon = "213721370"
+            };
+
+            decimal n;
+            try
+            {
+                // Do not initialize this variable here.
+                n = Decimal.Parse(txtPrice.Text);
+            }
+            catch
+            {
+                n = 50; 
+            }
+            Jezyki jezykiObject = new Jezyki()
+            {
+                jezyk = txtLang.Text,
+                cena_za_strone = n
+                
+            };
+            Jezyki_Tlumacza jezykiTlumaczaObject = new Jezyki_Tlumacza()
+            {
+                id_jezyka = jezykiObject.id_jezyka,
+                id_tlumacza = tlumaczeObject.id_tlumacza,
+
             };
 
             db.Tlumaczes.Add(tlumaczeObject);
-            db.SaveChanges();
+            db.Jezykis.Add(jezykiObject);
+            db.Jezyki_Tlumacza.Add(jezykiTlumaczaObject);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Console.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+            }
         }
     }
 }
