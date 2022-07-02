@@ -25,9 +25,9 @@
 
         </Grid.RowDefinitions>
 
-        <Button x:Name="button" Margin="10,10,10,10" Content="Order translation here" Click="BtnClick1" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Background="#FFE164FF"/>
-        <Button x:Name="btnLoad" Margin="10,10,10,10" Content="Load data to the grid" Click="BtnClickLoad" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Background="#FFE164FF" Grid.Column="2"/>
-        <DataGrid x:Name="TranslatorGrid" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="10,0,-10,0"/>
+        <Button x:Name="button" Margin="10,10,10,10" Content="Order a new translation" Click="BtnClick1" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Background="#FFE164FF"/>
+        <Button x:Name="btnLoad" Margin="10,10,10,10" Content="Load current employees" Click="BtnClickLoad" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Background="#FFE164FF" Grid.Column="2"/>
+        <DataGrid x:Name="TranslatorGrid" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="10,10,10,10"/>
         <Label Content="Name: " HorizontalAlignment="Center" VerticalAlignment="Top" Height="45" Width="236" Margin="0,10,0,0" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Grid.Row="1"/>
         <TextBox x:Name="txtName" TextWrapping="Wrap" Text="" Margin="10,60,10,10" FontSize="20" FontFamily="Bahnschrift Light" Background="#FFFF64FF" Foreground="White" Grid.Row="1"/>
         <Label Grid.Column="1" Content="Surname: " HorizontalAlignment="Center" VerticalAlignment="Top" Height="45" Width="236" FontSize="20" FontFamily="Bahnschrift Light" Foreground="White" Margin="0,10,0,0" Grid.Row="1"/>

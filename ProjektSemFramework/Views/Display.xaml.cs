@@ -45,7 +45,8 @@ namespace ProjektSemFramework.Views
                      {
                          Translator = d.imie + " " + d.nazwisko,
                          NativeSpeaker = d.jezyk_ojczysty,
-                         Language = a.jezyk
+                         Language = a.jezyk,
+                         PricePerPage = a.cena_za_strone
                      };
 
 
@@ -95,6 +96,7 @@ namespace ProjektSemFramework.Views
             db.Tlumaczes.Add(tlumaczeObject);
             db.Jezykis.Add(jezykiObject);
             db.Jezyki_Tlumacza.Add(jezykiTlumaczaObject);
+
             try
             {
                 db.SaveChanges();
